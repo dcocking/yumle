@@ -192,13 +192,13 @@ export class GameComponent implements OnInit {
       (this.yumms)[this.currentIndex].guesses.forEach((correctGuess: string) => {
         if (guess === correctGuess) {
           validAnswer = true;
-          this.gameOver();
         }
       })
 
       // @ts-ignore
       this.guessHistory.push(guess);
       this.updateScore();
+      this.gameOver();
     }
   }
 
