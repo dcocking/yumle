@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/yumle",
+            "outputPath": "dist/yummle",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Yumle:build:production"
+              "browserTarget": "Yummle:build:production"
             },
             "development": {
-              "browserTarget": "Yumle:build:development"
+              "browserTarget": "Yummle:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Yumle:build"
+            "browserTarget": "Yummle:build"
           }
         },
         "test": {

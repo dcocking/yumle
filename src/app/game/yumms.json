@@ -1,0 +1,50 @@
+[
+  {
+    "image": "carrots.jpg",
+    "guesses": [
+      "carrot",
+      "carrots"
+    ]
+  },
+  {
+    "image": "pickles.jpg",
+    "guesses": [
+      "pickles",
+      "pickle"
+    ]
+  },
+  {
+    "image": "hamburger.jpg",
+    "guesses": [
+      "burger",
+      "hamburger",
+      "beef burger",
+      "beef-burger"
+    ]
+  },  
+  {
+    "image": "cakepop.jpg",
+    "guesses": [
+      "cakepop",
+      "cake pop",
+      "cake pops",
+      "cakepops",
+      "cake-pop",
+      "cake-pops"
+    ]
+  },
+  {
+    "image": "taco.jpg",
+    "guesses": [
+      "tacos",
+      "taco"
+    ]
+  },
+  {
+    "image": "icecream.jpg",
+    "guesses": [
+      "icecream",
+      "ice cream"
+    ]
+  }  
+]
