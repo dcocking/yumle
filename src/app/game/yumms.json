@@ -1,5 +1,41 @@
 [
   {
+    "image": "frenchtoast.jpg",
+    "guesses": [
+      "french toast",
+      "frenchtoast"
+    ]
+  },
+  {
+    "image": "hotdog.jpg",
+    "guesses": [
+      "hotdog",
+      "hot dog",
+      "hot dogs"
+    ]
+  },
+  {
+    "image": "cherries.jpg",
+    "guesses": [
+      "cherry",
+      "cherries"
+    ]
+  },
+  {
+    "image": "apple.png",
+    "guesses": [
+      "apple",
+      "apples"
+    ]
+  },
+  {
+    "image": "luckycharms.jpg",
+    "guesses": [
+      "lucky charms",
+      "luckycharms"
+    ]
+  },  
+  {
     "image": "carrots.jpg",
     "guesses": [
       "carrot",

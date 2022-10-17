@@ -1,19 +1,15 @@
 <div class="container">
   <div class="text-center mt-4 mb-4"><img src="assets/yummle-logo.png" height="75px"></div>
   <div class="text-center input-row mb-4">
-    <div>Reveals: </div><div id="reveal-count">0</div><div>Guesses: </div><div id="guess-count">0</div>
+    <div>Guesses: </div><div id="guess-count">0</div>
   </div>
   <div class="text-center input-row mb-4">
-    <label for="guessInput"><strong>Guess:</strong></label>
-    <input type="text" class="form-control form-control-lg" style="width:300px;" id="guessInput" (keydown)="guess($event)">
-    <button class="btn btn-primary" (click)="guess()">Guess</button>
-  </div>
-  <div id="controls" class="text-center">
-    <button type="button" class="btn btn-primary" (click)="nextReveal()">Reveal Clue</button>
-    <button type="button" class="btn btn-primary" (click)="nextYummle()">Next Yummle</button>
+    <input type="text" autofocus placeholder="Enter Guess" class="form-control form-control-lg" style="width:300px;" id="guessInput" (keydown)="guess($event)">
+    <button class="btn btn-primary" (click)="guess()">Guess</button> <button type="button" class="btn btn-primary" (click)="nextYummle()">Next Yummle</button>
   </div>
   <div class="container mt-4 text-center">
-    <div id="yummle"></div>
+    <!-- <div id="yummle"></div> -->
+    <canvas #canvas width="500" height="500"></canvas>
   </div>
 </div>
 <!-- Button trigger modal -->
@@ -32,11 +28,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <div>You guessed this Yummle in <span id="modalRevealScore"></span> and <span id="modalGuessScore"></span>!</div>
+        <div>You guessed this Yummle in <span id="modalGuessScore"></span>!</div>
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="nextYummle()">Next Yummle</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Awesome!</button>
       </div>
     </div>
   </div>
