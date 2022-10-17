@@ -1,6 +1,12 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Inject} from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 import yumms from './yumms.json';
+
+export interface DialogData {
+  score: number,
+  answer: string
+}
 
 @Component({
   selector: 'app-game',
@@ -22,8 +28,10 @@ export class GameComponent implements OnInit {
   guessHistory: Array<string> = [];
 
   currentIndex = 0;
+  inputDisabled = false;
+  guessDisabled = false;
 
-  constructor() {
+  constructor(public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -85,6 +93,8 @@ export class GameComponent implements OnInit {
   resetGame() {
     this.guessHistory = [];
     this.currentPixelSize = this.PIXEL_SIZES[0];
+    this.inputDisabled = false;
+    this.guessDisabled = false;
   }
 
   /**
@@ -140,11 +150,21 @@ export class GameComponent implements OnInit {
       
       this.updateScore();
       if (validAnswer) {
+        this.inputDisabled = true;
+        this.guessDisabled = true;
         this.gameOver();
         this.revealImage();
-        this.resetGame();
       } else {
-        // @ts-ignore
+        if (this.guessHistory.length >= 5) {
+          let dialogRef = this.openGameOverDialog();
+            dialogRef.afterClosed().subscribe(result => {
+              this.inputDisabled = true;
+              this.guessDisabled = true;
+            if(result === true) {
+              this.nextYummle();
+            }
+          });
+        }
         this.nextPixelSize();
         this.pixelateImage();
       }
@@ -167,21 +187,19 @@ export class GameComponent implements OnInit {
    * Handles game over state after correct guess
    */
   gameOver() {
-    const modalGuessScore = document.getElementById('modalGuessScore');
-    const modalRevealScore = document.getElementById('modalRevealScore');
-    const modalAnswer = document.getElementById('modalAnswer');
     var scoreText = this.guessHistory.length + ' ';
     if (this.guessHistory.length === 1) {
       scoreText += 'guess';
     } else {
       scoreText += 'guesses';
     }
-    modalGuessScore!.innerText = scoreText;
     const lastAnswer = (this.guessHistory)[this.guessHistory.length - 1];
     const modalAnswerText = lastAnswer[0].toUpperCase() + lastAnswer.substring(1);
-    modalAnswer!.innerText = modalAnswerText;
-    // @ts-ignore
-    $('#exampleModalCenter').modal('show');
+
+    let dialogRef = this.openWinnerDialog(modalAnswerText, scoreText);
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('closed');
+    })
   }
 
   /**
@@ -193,4 +211,60 @@ export class GameComponent implements OnInit {
     this.loadYummle();
   }
 
+  openGameOverDialog(): MatDialogRef<any> {
+    const dialogRef = this.dialog.open(GameOverDialog, {
+      width: '300px',
+      data: {},
+    });
+
+    return dialogRef;
+  }  
+
+  openWinnerDialog(modalAnswerText: string, scoreText: string): MatDialogRef<any> {
+    const dialogRef = this.dialog.open(WinnerDialog, {
+      width: '300px',
+      data: {
+        score: scoreText,
+        answer: modalAnswerText,
+      },
+    });
+
+    return dialogRef;
+  }    
+
+}
+
+@Component({
+  selector: 'app-dialog',
+  templateUrl: 'gameover-dialog.component.html',
+})
+export class GameOverDialog {
+  constructor(
+    public dialogRef: MatDialogRef<GameOverDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector: 'app-dialog-win',
+  templateUrl: 'winner-dialog.component.html',
+})
+export class WinnerDialog {
+  guesses: number = 0;
+  answer: string = '';
+  constructor(
+    public dialogRef: MatDialogRef<WinnerDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) {
+    this.guesses = data.score;
+    this.answer = data.answer;
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }
