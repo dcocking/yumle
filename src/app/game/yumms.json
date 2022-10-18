@@ -1,5 +1,28 @@
 [
   {
+    "image": "samosas.jpg",
+    "guesses": [
+      "samosas"
+    ]
+  },
+  {
+    "image": "coffee.jpg",
+    "guesses": [
+      "coffee",
+      "coffee cup",
+      "cup of coffee"
+    ]
+  },
+  {
+    "image": "pumpkinpie.jpg",
+    "guesses": [
+      "pumpkin pie",
+      "pumpkinpie",
+      "pumpkin pies",
+      "pumpkin pie pieces"
+    ]
+  },
+  {
     "image": "frenchtoast.jpg",
     "guesses": [
       "french toast",
