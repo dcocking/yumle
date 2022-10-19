@@ -1,7 +1,7 @@
 <div class="container">
   <div class="text-center mt-4 mb-2"><img src="assets/yummly-logo.png" height="90px"></div>
   <div class="text-center input-row mb-4">
-    <div>Guesses: </div><div id="guess-count">0</div>
+    <div>Guesses: </div><div id="guess-count">0</div><div><button (click)="openStatsdialog()">Show Stats</button></div>
   </div>
   <div class="text-center input-row mb-4">
     <input type="text" autofocus [disabled]="inputDisabled" placeholder="Enter Guess" class="form-control form-control-lg" style="width:300px;" id="guessInput" (keydown)="guess($event)">

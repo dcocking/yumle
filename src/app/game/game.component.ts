@@ -1,5 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild, Inject} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { StatsService, StatsData } from '../services/stats.service';
 
 import yumms from './yumms.json';
 
@@ -31,7 +32,8 @@ export class GameComponent implements OnInit {
   inputDisabled = false;
   guessDisabled = false;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, public statsService: StatsService) {
+    
   }
 
   ngOnInit(): void {
@@ -153,6 +155,7 @@ export class GameComponent implements OnInit {
         this.inputDisabled = true;
         this.guessDisabled = true;
         this.gameOver();
+        this.statsService.update(this.guessHistory.length, true);
         this.revealImage();
       } else {
         if (this.guessHistory.length >= 5) {
@@ -160,6 +163,7 @@ export class GameComponent implements OnInit {
             dialogRef.afterClosed().subscribe(result => {
               this.inputDisabled = true;
               this.guessDisabled = true;
+              this.statsService.update(this.guessHistory.length);
             if(result === true) {
               this.nextYummle();
             }
@@ -232,6 +236,16 @@ export class GameComponent implements OnInit {
     return dialogRef;
   }    
 
+  openStatsdialog(): MatDialogRef<any> {
+    const stats = this.statsService.get();
+    const dialogRef = this.dialog.open(StatsDialog, {
+      width: '300px',
+      data: stats
+    });
+
+    return dialogRef;
+  }
+
 }
 
 @Component({
@@ -266,5 +280,35 @@ export class WinnerDialog {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector: 'app-stats-win',
+  templateUrl: 'stats-dialog.component.html',
+  styleUrls: ['./stats-dialog.component.css']
+})
+export class StatsDialog {
+
+  maxGuesses: number = 0;
+
+  constructor(
+    public dialogRef: MatDialogRef<StatsDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: StatsData,
+  ) {
+    this.processStats();
+  }
+
+  /**
+   * Get the highest number of guesses to properly
+   * format the meters
+   */
+  processStats() {
+    this.maxGuesses = this.data.winDistribution[1];
+    Object.keys(this.data.winDistribution).forEach((key) => {
+      if (this.data.winDistribution[Number(key)] > this.maxGuesses) {
+        this.maxGuesses = this.data.winDistribution[Number(key)];
+      }
+    })
   }
 }

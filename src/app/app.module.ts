@@ -9,15 +9,20 @@ import { MatCardModule } from "@angular/material/card";
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogModule } from '@angular/cdk/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { GameComponent } from './game/game.component';
-import { GameOverDialog, WinnerDialog } from "./game/game.component";
+import {
+  GameComponent,
+  GameOverDialog,
+  WinnerDialog,
+  StatsDialog } from './game/game.component';
+import { StatsService } from './services/stats.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameComponent,
     GameOverDialog,
-    WinnerDialog
+    WinnerDialog,
+    StatsDialog
   ],
   imports: [
     BrowserModule,
@@ -27,7 +32,7 @@ import { GameOverDialog, WinnerDialog } from "./game/game.component";
     MatButtonModule,
     DialogModule
   ],
-  providers: [],
+  providers: [StatsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
