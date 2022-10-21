@@ -15,6 +15,7 @@ import {
   WinnerDialog,
   StatsDialog } from './game/game.component';
 import { StatsService } from './services/stats.service';
+import { SupabaseService } from './services/supabase.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { StatsService } from './services/stats.service';
     MatButtonModule,
     DialogModule
   ],
-  providers: [StatsService],
+  providers: [StatsService, SupabaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

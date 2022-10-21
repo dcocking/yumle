@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SupabaseService } from './supabase.service';
 
 export interface StatsData {
   played: number;
@@ -20,7 +21,7 @@ export class StatsService {
 
   currentStats!: StatsData;
 
-  constructor() {
+  constructor(public supabase: SupabaseService) {
     console.log("Stats Service Started")
     this.load();
   }
