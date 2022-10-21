@@ -26,6 +26,7 @@ export class GameComponent implements OnInit {
   currentImage!: HTMLImageElement;
   currentPixelSize: number = this.PIXEL_SIZES[0];
   guessHistory: Array<string> = [];
+  canvasWidth: number = 500;
 
   currentIndex = 0;
   inputDisabled = false;
@@ -45,6 +46,33 @@ export class GameComponent implements OnInit {
   }
 
   /**
+   * Sets the canvas proportionally to the window size, and adjusts the
+   * pixelation ratio based on the size
+   */
+  prepareCanvas() {
+    if (window.innerWidth < 500) {
+      this.canvasWidth = window.innerWidth - 40;
+    }
+
+    console.log(this.canvasWidth);
+    console.log(Math.round(this.canvasWidth/10));
+    // TODO: Rewrite to use certain number of squares vs pixelation ratio
+    // Also, likely need to adjust canvas width to evenly divisible sizes
+    // 10 12 16 25 50
+
+    const pixelationRatio = this.canvasWidth / 500;
+
+    // If canvas is less than 500px thick, adjust pixelation sizes so they fit
+    if (pixelationRatio != 1) {
+      this.PIXEL_SIZES.forEach((size,index) => {
+        // this.PIXEL_SIZES[index] = Math.floor(size * pixelationRatio);
+        this.PIXEL_SIZES[index] = Math.floor(this.canvasWidth/10);
+      })
+    }
+    this.currentPixelSize = this.PIXEL_SIZES[0];
+  }
+
+  /**
    * TODO
    * 
    * X Replace current grid image with pixelation
@@ -61,10 +89,13 @@ export class GameComponent implements OnInit {
   pixelateImage() {
     let w = this.currentImage.width;
     let h = this.currentImage.height;
-    this.ctx.drawImage(this.currentImage,0,0);
+
+    this.ctx.canvas.width = this.canvasWidth;
+    this.ctx.canvas.height = this.canvasWidth;
+    this.ctx.drawImage(this.currentImage,0,0,this.canvasWidth,this.canvasWidth);
     let pixelArr = this.ctx.getImageData(0, 0, w, h).data;
-    // let sampleSize = 10;
-    
+    let sampleSize = 10;
+
     for (let y = 0; y < h; y += this.currentPixelSize) {
       for (let x = 0; x < w; x += this.currentPixelSize) {
         let p = (x + (y*w)) * 4;
@@ -82,6 +113,7 @@ export class GameComponent implements OnInit {
   loadYummle() {
     this.getImage('assets/' + this.yumms[this.currentIndex].image).then((image) => {
       this.currentImage = <HTMLImageElement>image;
+      this.prepareCanvas();
       this.pixelateImage();
       this.updateScore();
     })

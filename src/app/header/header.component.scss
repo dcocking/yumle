@@ -1,0 +1,10 @@
+.header-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 2rem ;
+
+  img {
+    max-height: 100px;
+    overflow: auto;
+  }
+}

@@ -1,13 +1,15 @@
 <div class="container">
-  <div class="text-center mt-4 mb-2"><img src="assets/yummly-logo.png" height="90px"></div>
   <div class="text-center input-row mb-4">
     <div>Guesses: </div><div id="guess-count">0</div>
   </div>
-  <div class="text-center input-row mb-4">
-    <input type="text" autofocus [disabled]="inputDisabled" placeholder="Enter Guess" class="form-control form-control-lg" style="width:300px;" id="guessInput" (keydown)="guess($event)">
-    <button class="btn btn-primary" (click)="guess()" [disabled]="guessDisabled">Guess</button> <button type="button" class="btn btn-primary" (click)="nextYummle()">Next Yummle</button>
+  <div class="inputs text-center input-row mb-4">
+    <input type="text" autofocus [disabled]="inputDisabled" placeholder="Enter Guess" class="form-control form-control-lg" id="guessInput" (keydown)="guess($event)">
+    <button class="btn btn-primary btn-lg" (click)="guess()" [disabled]="guessDisabled">Guess</button>
   </div>
   <div class="container mt-4 text-center">
-    <canvas #canvas width="500" height="500"></canvas>
+    <canvas #canvas></canvas>
+  </div>
+  <div class="container mt-3 text-center">
+    <button type="button" class="btn btn-primary btn-lg" (click)="nextYummle()">Next Yummle</button>
   </div>
 </div>

@@ -2,6 +2,10 @@
   border-spacing: 0px;
 }
 
+.inputs {
+  display: flex;
+}
+
 #yumle {
   display: flex;
   flex-direction: column;
