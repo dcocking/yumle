@@ -1,5 +1,64 @@
 [
   {
+    "image": "samosas.jpg",
+    "guesses": [
+      "samosas"
+    ]
+  },
+  {
+    "image": "coffee.jpg",
+    "guesses": [
+      "coffee",
+      "coffee cup",
+      "cup of coffee"
+    ]
+  },
+  {
+    "image": "pumpkinpie.jpg",
+    "guesses": [
+      "pumpkin pie",
+      "pumpkinpie",
+      "pumpkin pies",
+      "pumpkin pie pieces"
+    ]
+  },
+  {
+    "image": "frenchtoast.jpg",
+    "guesses": [
+      "french toast",
+      "frenchtoast"
+    ]
+  },
+  {
+    "image": "hotdog.jpg",
+    "guesses": [
+      "hotdog",
+      "hot dog",
+      "hot dogs"
+    ]
+  },
+  {
+    "image": "cherries.jpg",
+    "guesses": [
+      "cherry",
+      "cherries"
+    ]
+  },
+  {
+    "image": "apple.png",
+    "guesses": [
+      "apple",
+      "apples"
+    ]
+  },
+  {
+    "image": "luckycharms.jpg",
+    "guesses": [
+      "lucky charms",
+      "luckycharms"
+    ]
+  },  
+  {
     "image": "carrots.jpg",
     "guesses": [
       "carrot",
