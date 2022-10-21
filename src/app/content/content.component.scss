@@ -5,12 +5,3 @@
   align-items: flex-start;
   flex-grow: 1;
 }
-
-.content-grid {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  display: grid;
-  //grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
-  //grid-template-rows: repeat(auto-fit, minmax(20px, 1fr));
-}

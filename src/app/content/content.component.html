@@ -1,13 +1,3 @@
 <div class="content-wrapper">
-  <div class="content-grid"
-       [ngStyle]="{'grid-template-columns': gridTemplate, 'grid-template-rows': gridTemplate}"
-  >
-
-    <div
-      class="content-tile"
-      *ngFor="let x of setArray(total); index as i"
-      [ngStyle]="{'backdrop-filter': filterMap[i]}">
-    </div>
-  </div>
-  <img src="assets/cakepop.jpg" class="img-fluid" alt="yummle guess">
+    <app-game></app-game>
 </div>
