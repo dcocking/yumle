@@ -12,6 +12,12 @@ img {
   overflow: auto;
 }
 
+.icon {
+  max-height: 25px;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
 #yumle {
   display: flex;
   flex-direction: column;
@@ -32,6 +38,7 @@ img {
   column-gap: 5px;
   font-weight: 600;
   font-size: 1.2em;
+  align-items: center;
 }
 
 .input-row {

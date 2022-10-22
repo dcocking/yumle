@@ -1,0 +1,68 @@
+<h1 mat-dialog-title>Statistics</h1>
+<div mat-dialog-content>
+  <div class="header">General Stats</div>
+  <div id="stats">
+    <div class="stat">
+      <div class="score">{{data.played}}</div>
+      <div class="label">Played</div>
+    </div>   
+    <div class="stat">
+      <div class="score">{{data.winPercent|percent}}</div>
+      <div class="label">Win %</div>
+    </div>
+    <div class="stat">
+      <div class="score">{{data.streakCurrent}}</div>
+      <div class="label">Current Streak</div>
+    </div>
+    <div class="stat">
+      <div class="score">{{data.streakMax}}</div>
+      <div class="label">Max Streak</div>
+    </div> 
+    <div class="stat">
+      <div class="score">{{data.totalGuesses}}</div>
+      <div class="label">Total Guesses</div>
+    </div> 
+  </div>
+  <div class="header">Win Distribution</div>
+  <div class="distribution">
+    <div class="distribution-row">
+      <div class="header-meter">1</div>
+      <div class="meter-row">
+        <meter class="meter" min="0" [max]="maxGuesses" [value]="data.winDistribution[1]"></meter>
+      </div>
+      <div>{{data.winDistribution[1]}}</div>
+    </div>
+    <div class="distribution-row">
+      <div class="header-meter">2</div>
+      <div class="meter-row">
+        <meter class="meter" min="0" [max]="maxGuesses" [value]="data.winDistribution[2]"></meter>
+      </div>
+      <div>{{data.winDistribution[2]}}</div>
+    </div>
+    <div class="distribution-row">
+      <div class="header-meter">3</div>
+      <div class="meter-row">
+        <meter class="meter" min="0" [max]="maxGuesses" [value]="data.winDistribution[3]"></meter>
+      </div>
+      <div>{{data.winDistribution[3]}}</div>
+    </div>
+    <div class="distribution-row">
+      <div class="header-meter">4</div>
+      <div class="meter-row">
+        <meter class="meter" min="0" [max]="maxGuesses" [value]="data.winDistribution[4]"></meter>
+      </div>
+      <div>{{data.winDistribution[4]}}</div>
+    </div>
+    <div class="distribution-row">
+      <div class="header-meter">5</div>
+      <div class="meter-row">
+        <meter class="meter" min="0" [max]="maxGuesses" [value]="data.winDistribution[5]"></meter>
+      </div>
+      <div>{{data.winDistribution[5]}}</div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">Close</button>
+  <button mat-button [mat-dialog-close]="true">Next Yummle</button>
+</div>
