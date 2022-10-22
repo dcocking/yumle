@@ -1,15 +1,24 @@
 <div class="container">
-  <div class="text-center input-row mb-4">
-    <div>Guesses: </div><div id="guess-count">0</div>
+  <div class="text-center input-row">
+    <div>
+      <img src="assets/yummle-logo.png" alt="yummle logo">
+    </div>
+    <div class="column">
+      <div>Guesses: </div><div id="guess-count">0</div>
+    </div>
   </div>
-  <div class="inputs text-center input-row mb-4">
-    <input type="text" autofocus [disabled]="inputDisabled" placeholder="Enter Guess" class="form-control form-control-lg" id="guessInput" (keydown)="guess($event)">
-    <button class="btn btn-primary btn-lg" (click)="guess()" [disabled]="guessDisabled">Guess</button>
-  </div>
-  <div class="container mt-4 text-center">
+  <div class="container mt-1 text-center">
     <canvas #canvas></canvas>
   </div>
-  <div class="container mt-3 text-center">
-    <button type="button" class="btn btn-primary btn-lg" (click)="nextYummle()">Next Yummle</button>
+  <div class="inputs text-center mb-1">
+    <input type="text" value={{value}} disabled="true" placeholder="Type Guess" class="form-control form-control-lg" id="guessInput" (keydown)="guess($event)">
+    <!-- <button class="btn btn-primary btn-lg" (click)="guess()" [disabled]="guessDisabled">Guess</button> -->
+  </div>  
+  <div class="container">
+    <!-- <input (input)="onInputChange($event)" class="input" value={{value}} placeholder="Tap on the virtual keyboard to start" /> -->
+	  <div class="simple-keyboard"></div>
   </div>
+  <!-- <div class="container mt-3 text-center">
+    <button type="button" class="btn btn-primary btn-lg" (click)="nextYummle()">Next Yummle</button>
+  </div> -->
 </div>
