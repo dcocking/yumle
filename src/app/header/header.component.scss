@@ -1,0 +1,10 @@
+.header-wrapper {
+  display: flex;
+  justify-content:space-evenly;
+  padding-top: 1rem ;
+
+  img {
+    max-height: 50px;
+    overflow: auto;
+  }
+}

@@ -15,11 +15,17 @@ import {
   WinnerDialog,
   StatsDialog } from './game/game.component';
 import { StatsService } from './services/stats.service';
+import { HeaderComponent } from "./header/header.component";
+import { FooterComponent } from './footer/footer.component';
+import { ContentComponent } from './content/content.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameComponent,
+    HeaderComponent,
+    FooterComponent,
+    ContentComponent,
     GameOverDialog,
     WinnerDialog,
     StatsDialog

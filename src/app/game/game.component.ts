@@ -1,6 +1,7 @@
-import {Component, ElementRef, OnInit, ViewChild, Inject} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Inject, HostListener} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { StatsService, StatsData } from '../services/stats.service';
+import Keyboard from "simple-keyboard";
 
 import yumms from './yumms.json';
 
@@ -15,10 +16,31 @@ export interface DialogData {
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
+  @HostListener('document:keydown', ['$event'])
+  handleKeypressEvent(event: KeyboardEvent) { 
+    if (event.key === "Backspace" || event.key === "Delete") {
+      this.value = this.value.slice(0, -1);
+    }
+    if (event.code === "Space") {
+      this.value += ' ';
+    }
+  }
+
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) { 
+    if (event.key === 'Enter') {
+      this.guess();  
+    } else {
+      this.value += event.key;
+    }
+  }
+
   // Proper loading of canvas element from:
   // https://medium.com/angular-in-depth/how-to-get-started-with-canvas-animations-in-angular-2f797257e5b4
   @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   private ctx!: CanvasRenderingContext2D;
+  keyboard!: Keyboard;
+  value = "";
 
   PIXEL_SIZES = [50,40,30,20,10,1];
 
@@ -27,6 +49,7 @@ export class GameComponent implements OnInit {
   currentImage!: HTMLImageElement;
   currentPixelSize: number = this.PIXEL_SIZES[0];
   guessHistory: Array<string> = [];
+  canvasWidth: number = 500;
 
   currentIndex = 0;
   inputDisabled = false;
@@ -41,18 +64,98 @@ export class GameComponent implements OnInit {
     this.getYumms();
   }
 
+  ngAfterViewInit() {
+    this.keyboard = new Keyboard({
+      onChange: input => this.onChange(input),
+      onKeyPress: (button:any) => this.onKeyPress(button),
+      mergeDisplay: true,
+      layoutName: "default",
+      layout: {
+        default: [
+          "q w e r t y u i o p",
+          "a s d f g h j k l",
+          "{ent} z x c v b n m {backspace}",
+          "{space}"
+        ],
+        numbers: ["1 2 3", "4 5 6", "7 8 9", "{abc} 0 {backspace}"]
+      },
+      display: {
+        "{numbers}": "123",
+        "{ent}": "return",
+        "{escape}": "esc ⎋",
+        "{tab}": "tab ⇥",
+        "{backspace}": "⌫",
+        "{capslock}": "caps lock ⇪",
+        "{shift}": "⇧",
+        "{controlleft}": "ctrl ⌃",
+        "{controlright}": "ctrl ⌃",
+        "{altleft}": "alt ⌥",
+        "{altright}": "alt ⌥",
+        "{metaleft}": "cmd ⌘",
+        "{metaright}": "cmd ⌘",
+        "{abc}": "ABC"
+      }
+    });
+  }  
+
+  onChange = (input: string) => {
+    this.value = input;
+  };
+
+  onKeyPress = (button: string) => {
+    if (button === "{ent}") {
+      this.guess();
+    }
+  };
+
+  onInputChange = (event: any) => {
+    this.keyboard.setInput(event.target.value);
+  };
+
   getYumms() {
     this.yumms = yumms;
     this.loadYummle();
   }
 
   /**
+   * Sets the canvas proportionally to the window size, and adjusts the
+   * pixelation ratio based on the size
+   */
+  prepareCanvas() {
+    this.resetPixelSteps();
+
+    if (window.innerWidth < 500) {
+      this.canvasWidth = window.innerWidth - 26;
+    }
+
+    // TODO: Rewrite to use certain number of squares vs pixelation ratio
+    // Also, likely need to adjust canvas width to evenly divisible sizes
+    // 10 12 16 25 50
+
+    const pixelationRatio = this.canvasWidth / 500;
+    console.log(`Window Width: ${window.innerWidth}`)
+    console.log(`Canvas Width: ${this.canvasWidth}`)
+    console.log(`Pixel Ratio: ${pixelationRatio}`)
+
+    // If canvas is less than 500px thick, adjust pixelation sizes so they fit
+    if (pixelationRatio != 1) {
+      this.PIXEL_SIZES.forEach((size,index) => {
+        if (size !== 1) {
+          this.PIXEL_SIZES[index] = Math.floor(size * pixelationRatio);
+        }
+      })
+    }
+    this.currentPixelSize = this.PIXEL_SIZES[0];
+    console.log(this.PIXEL_SIZES);
+  }
+
+  resetPixelSteps() {
+    this.PIXEL_SIZES = [50,40,30,20,10,1];
+  }
+
+  /**
    * TODO
    * 
-   * X Replace current grid image with pixelation
-   * X Tie failed guesses to next pixelation level
-   * - Limit guesses to only 5
-   * - Introduce mobile keyboard (see https://hodgef.com/simple-keyboard/demos/?d=mobile)
    * - Look at blur transition between one pixel size and the next (see https://github.com/hughjdavey/ngx-image-blur)
    * - Add history / state in cookie (will probably want to create a login at some point, maybe with https://supabase.com/)
    */
@@ -61,12 +164,19 @@ export class GameComponent implements OnInit {
    * Pixels the current image, at the current pixel size
    */
   pixelateImage() {
+    console.log('pixelate');
+    this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasWidth);
     let w = this.currentImage.width;
     let h = this.currentImage.height;
-    this.ctx.drawImage(this.currentImage,0,0);
+
+    this.ctx.canvas.width = this.canvasWidth;
+    this.ctx.canvas.height = this.canvasWidth;
+    this.ctx.drawImage(this.currentImage,0,0,this.canvasWidth,this.canvasWidth);
     let pixelArr = this.ctx.getImageData(0, 0, w, h).data;
     // let sampleSize = 10;
-    
+
+    console.log(`Current pixel size: ${this.currentPixelSize}`);
+
     for (let y = 0; y < h; y += this.currentPixelSize) {
       for (let x = 0; x < w; x += this.currentPixelSize) {
         let p = (x + (y*w)) * 4;
@@ -84,6 +194,7 @@ export class GameComponent implements OnInit {
   loadYummle() {
     this.getImage('assets/' + this.yumms[this.currentIndex].image).then((image) => {
       this.currentImage = <HTMLImageElement>image;
+      this.prepareCanvas();
       this.pixelateImage();
       this.updateScore();
     })
@@ -106,8 +217,10 @@ export class GameComponent implements OnInit {
     const totalGuesses = this.guessHistory.length;
     const guessTag = document.getElementById('guess-count');
     guessTag!.innerText = String(totalGuesses);
-    const guessInput = document.getElementById('guessInput') as HTMLInputElement;
-    guessInput!.value = '';
+    // const guessInput = document.getElementById('guessInput') as HTMLInputElement;
+    // guessInput!.value = '';
+    this.value = '';
+    this.keyboard.setInput('');
   }
 
 // Note: logo image - Blonde Font by Billy Argel from fontspace.com
@@ -134,10 +247,12 @@ export class GameComponent implements OnInit {
       if (event.key === 'Enter') {
         // @ts-ignore
         guess = document.getElementById('guessInput').value;
+        console.log(guess);
       }
     } else {
       // @ts-ignore
       guess = document.getElementById('guessInput').value;
+      console.log(guess);
     }
 
     if (guess !== '') {
@@ -202,6 +317,9 @@ export class GameComponent implements OnInit {
 
     let dialogRef = this.openWinnerDialog(modalAnswerText, scoreText);
     dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.nextYummle();
+      }
       console.log('closed');
     })
   }
@@ -211,6 +329,7 @@ export class GameComponent implements OnInit {
    */
   nextYummle() {
     this.currentIndex++;
+    this.currentPixelSize = this.PIXEL_SIZES[0];
     this.resetGame();
     this.loadYummle();
   }
