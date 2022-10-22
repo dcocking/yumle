@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild, Inject} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Inject, HostListener} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import Keyboard from "simple-keyboard";
 
@@ -15,6 +15,25 @@ export interface DialogData {
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
+  @HostListener('document:keydown', ['$event'])
+  handleKeypressEvent(event: KeyboardEvent) { 
+    if (event.key === "Backspace" || event.key === "Delete") {
+      this.value = this.value.slice(0, -1);
+    }
+    if (event.code === "Space") {
+      this.value += ' ';
+    }
+  }
+
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) { 
+    if (event.key === 'Enter') {
+      this.guess();  
+    } else {
+      this.value += event.key;
+    }
+  }
+
   // Proper loading of canvas element from:
   // https://medium.com/angular-in-depth/how-to-get-started-with-canvas-animations-in-angular-2f797257e5b4
   @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
@@ -79,11 +98,9 @@ export class GameComponent implements OnInit {
 
   onChange = (input: string) => {
     this.value = input;
-    console.log("Input changed", input);
   };
 
   onKeyPress = (button: string) => {
-    console.log("Button pressed", button);
     if (button === "{ent}") {
       this.guess();
     }
@@ -103,6 +120,8 @@ export class GameComponent implements OnInit {
    * pixelation ratio based on the size
    */
   prepareCanvas() {
+    this.resetPixelSteps();
+
     if (window.innerWidth < 500) {
       this.canvasWidth = window.innerWidth - 26;
     }
@@ -128,13 +147,13 @@ export class GameComponent implements OnInit {
     console.log(this.PIXEL_SIZES);
   }
 
+  resetPixelSteps() {
+    this.PIXEL_SIZES = [50,40,30,20,10,1];
+  }
+
   /**
    * TODO
    * 
-   * X Replace current grid image with pixelation
-   * X Tie failed guesses to next pixelation level
-   * - Limit guesses to only 5
-   * - Introduce mobile keyboard (see https://hodgef.com/simple-keyboard/demos/?d=mobile)
    * - Look at blur transition between one pixel size and the next (see https://github.com/hughjdavey/ngx-image-blur)
    * - Add history / state in cookie (will probably want to create a login at some point, maybe with https://supabase.com/)
    */

@@ -7,4 +7,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Yummle';
+
+  ngOnInit() {
+    // Prevent spacebar from scrolling page
+    window.addEventListener('keydown', function(e) {
+      if(e.code == 'Space' && e.target == document.body) {
+        e.preventDefault();
+      }
+    });  
+  }
+
 }
