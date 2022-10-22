@@ -362,6 +362,12 @@ export class GameComponent implements OnInit {
       data: stats
     });
 
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.nextYummle();
+      }
+    })
+
     return dialogRef;
   }
 
